@@ -8,7 +8,7 @@ The doc is expected to evolve. Add to it as new items surface; strike items as t
 
 - **Sole developer.** Lynn is the only person committing to this repo and the only operator of the VPS. The remote is public, but it is used to sync between machines and as off-laptop backup, not for collaboration.
 - **History rewrites are acceptable.** Because no one else pulls from the remote, force-pushing after a `git filter-repo` is a non-event — re-clone any other machine and move on. This is worth stating explicitly because most git advice assumes shared history.
-- **Email today vs. tomorrow.** Commits today are authored as `Lynn <bdelforge@protonmail.com>`. Once `lynn@lynnscape.eu` exists, that becomes the canonical identity and prior history will be rewritten to match (see "Git identity migration" below).
+- **Email.** Commits are authored as `Lynn <lynn@lynnscape.eu>`. Until 2026-11-11 they were authored as `Lynn <bdelforge@protonmail.com>`; that day the history was rewritten to the new address and the repo moved from `Niriel/cairn` to `Lynnscape/cairn` (see "Git identity migration" below).
 
 ## Phase 1 — Domain and email
 
@@ -66,6 +66,8 @@ Follows `deployment.md` end-to-end. Pre-flight checklist:
 - [ ] Test restore performed against a throwaway target before considering the system live.
 
 ## Phase 4 — Git identity migration
+
+**Done 2026-11-11** for Cairn: history rewritten, force-pushed, and the repo transferred from `Niriel/cairn` to `Lynnscape/cairn` (GitHub redirects the old address, which the 1.0.0 licence page still links to). Flora pushes with its own key for the Lynnscape account (`core.sshCommand` in the clone); the server fetches over public https.
 
 Triggered when `lynn@lynnscape.eu` exists and is the address Lynn wants attached to commits going forward.
 

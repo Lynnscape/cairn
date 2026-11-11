@@ -7,6 +7,11 @@ Notable changes to Cairn, newest first. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- The source code moved to <https://github.com/Lynnscape/cairn>, and the
+  licence page links there. The old address redirects.
+
 ## [1.0.0] - 2026-10-20
 
 First release, live at <https://cairn.lynnscape.eu>.
@@ -31,5 +36,5 @@ First release, live at <https://cairn.lynnscape.eu>.
 - For the operator: a self-hosted production stack (Postgres, PostgREST,
   GoTrue, Caddy with automatic TLS) and the `cairn-admin` CLI.
 
-[Unreleased]: https://github.com/Niriel/cairn/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/Niriel/cairn/releases/tag/v1.0.0
+[Unreleased]: https://github.com/Lynnscape/cairn/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/Lynnscape/cairn/releases/tag/v1.0.0

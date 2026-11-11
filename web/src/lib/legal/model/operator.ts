@@ -37,7 +37,7 @@ export const GOVERNING_LAW = {
 	court: 'the competent court in Groningen (Rechtbank Noord-Nederland)'
 } as const;
 
-export const SOURCE_REPO_URL = 'https://github.com/Niriel/cairn';
+export const SOURCE_REPO_URL = 'https://github.com/Lynnscape/cairn';
 
 // ISO dates; bump one whenever its page's text changes.
 export const POLICY_DATES = { privacy: '2026-10-20', terms: '2026-10-20' } as const;
