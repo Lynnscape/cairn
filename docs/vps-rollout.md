@@ -50,7 +50,7 @@ Other subdomains (one per app on the VPS) get added as those apps come online.
 Mechanically covered by `deployment.md` ("The VPS" → "First-login hardening" → "Docker"). Two notes specific to this rollout:
 
 - **Shared infrastructure.** This box is meant to host more than just Cairn. Provision it under a generic user (`ops` or `lynn` rather than `cairn`), and lay out the filesystem with sibling app directories (`/srv/cairn/`, `/srv/<next-app>/`) rather than nesting under a Cairn-specific home.
-- **Caddy as shared front door.** A single Caddy instance terminates TLS for every app's subdomain. The Caddyfile lives outside any individual app's repo — likely `/srv/caddy/Caddyfile` — and `include`s per-app snippets that each app's repo provides.
+- **Caddy as shared front door.** A single Caddy instance terminates TLS for every app's subdomain. It lives in its own repo, `lynnscape-server` (`/srv/lynnscape-server` on the box), and forwards each subdomain to that app's own Caddy over a shared `edge` Docker network; each app keeps its routing in its own repo. See `deployment.md` → "Behind the shared lynnscape Caddy".
 
 Both of these diverge slightly from the layout shown in `deployment.md`, which is written as if Cairn were the only tenant. When the divergence becomes real, update `deployment.md` to match rather than letting the two drift.
 

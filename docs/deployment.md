@@ -114,17 +114,19 @@ The production overlay (`docker-compose.prod.yml`) is started with:
 docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up -d --build
 ```
 
+The shared lynnscape Caddy must be up (or at least created) first: its compose file creates the `edge` network that Cairn's Caddy joins, and Compose refuses to start a stack whose external network doesn't exist. See "Behind the shared lynnscape Caddy" below.
+
 The services in the production stack:
 
 - **postgres / postgrest / gotrue** — internal only; reached by service name on the Compose network. Postgres additionally publishes `127.0.0.1:5432:5432` (loopback only) so `scripts/migrate.sh` can reach it from the host; it is not internet-reachable.
 - **auth-proxy** — a small Cairn-shaped **BFF** (not just the response-side half of the old cookie/JWT shim): it plants the **dual session cookie** (durable revocable refresh token + short-lived access JWT), exposes `POST /auth/refresh` (refresh-token exchange with rotation + reuse detection) and `POST /auth/signout` (server-side revocation; `?scope=global` for sign-out-everywhere), enforces a CSRF header on its state-changing endpoints, and rate-limits sign-in. It still reuses the dev-proxy logic and the shared `auth-paths.ts` narrowing/constant lists. Caddy routes `/auth/*` to it; it forwards to `gotrue:9999`. See `architecture.md` → "JWT storage".
 - **web** — the SvelteKit static bundle, built in production mode and served by Caddy inside the image (see `web/Dockerfile`). Also serves `/gotrue/templates/*`.
 - **sidecar** — the avatar upload sidecar on port `3001` (see `avatars.md`); validates, resizes to 256×256 WebP, writes `/srv/cairn/avatars/{uid}.webp`, calls `bump_avatar_version` on PostgREST.
-- **caddy** — the only public entry point, publishing `80`/`443`, terminating TLS, and mounting `caddy/Caddyfile.prod`.
+- **caddy** — Cairn's router, mounting `caddy/Caddyfile.prod`. It publishes no ports: it serves plain HTTP on the shared `edge` Docker network under the alias `cairn`, and the shared lynnscape Caddy in front of it owns `80`/`443` and TLS (see "Behind the shared lynnscape Caddy" below).
 
 Notes:
 
-- **No internal services are exposed.** The base publishes nothing; the prod overlay publishes only Caddy's `80`/`443` and Postgres's loopback `5432`. (Docker-published ports bypass ufw's `INPUT` filter, so "publish nothing by default" is the safe posture — see Task 3.1 in the rollout plan.)
+- **No internal services are exposed.** The base publishes nothing; the prod overlay publishes only Postgres's loopback `5432`. The public `80`/`443` belong to the shared lynnscape Caddy. (Docker-published ports bypass ufw's `INPUT` filter, so "publish nothing by default" is the safe posture — see Task 3.1 in the rollout plan.)
 - **`GOTRUE_SITE_URL` is the web origin**, not the API — GoTrue's notion of where the app lives.
 - **Mailpit is dev-only** — it lives in `docker-compose.override.yml` and is absent from the prod stack.
 - **Log retention is a size cap.** Every service in the prod stack uses the `x-logging` anchor in `docker-compose.prod.yml`: the `json-file` driver with `max-size: 10m`, `max-file: 5`, so at most ~50 MB of log per service, oldest lines dropped first. Docker's default is unbounded. The cap applies only to a container **created** with it — after changing the options, `docker compose ... up -d` recreates the affected containers, and recreating a container discards its existing log. Caddy writes no access log in production. The privacy policy states this cap; change it only together with `logging.md` and the policy (see `legal.md` → claims table).
@@ -132,15 +134,33 @@ Notes:
 
 ### The Caddyfile
 
-The canonical production reverse-proxy config is the real `caddy/Caddyfile.prod` in the repo — read it rather than a pseudocode copy here. Its shape, single origin `cairn.{$DOMAIN}` with automatic Let's Encrypt TLS:
+The canonical production reverse-proxy config is the real `caddy/Caddyfile.prod` in the repo — read it rather than a pseudocode copy here. Its shape, single origin `http://cairn.{$DOMAIN}` (plain HTTP: TLS ends at the shared lynnscape Caddy in front of it):
 
 - `encode gzip` and the security headers (HSTS `max-age=31536000; includeSubDomains`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`).
 - **`/api/*`** → `postgrest:3000` via `handle_path` (strips the `/api` prefix), with the stock cookie→bearer translation. This reads the **short-lived access cookie** (`__Host-cairn_access` in prod) via `header_regexp … Cookie __Host-cairn_access=…`, _not_ the durable refresh-token cookie, and emits `Authorization: Bearer …`.
-- **`/auth/*`** → split by one rule, with **no** prefix strip. The split is on method: every BFF endpoint is a `POST` and every SPA `/auth` page (sign-in, register, recovery) is a `GET`, so any `GET`/`HEAD` goes to `web`, whose `index.html` fallback lets the SPA route it, and **every other** `/auth` request goes to `reverse_proxy auth-proxy:3002`. The auth-proxy owns the list of BFF endpoints and answers anything else with a 404, so Caddy keeps no path list at all (adding an `/auth` page or endpoint never touches the Caddyfile), and production answers each `/auth` request exactly as the dev mirror in `web/vite.config.ts` does. A blanket `handle_path /auth/*` would strip `/auth`, break the auth-proxy's routing, and swallow those GET pages — the subtlest prod-only failure. The dual-cookie plant + token-strip happens inside the `auth-proxy` BFF, not Caddy. The auth-proxy handle also sets **`header_up X-Real-IP {remote_host}`**: the BFF's rate limiter keys per-IP off `X-Real-IP` only (never the spoofable `X-Forwarded-For`), Caddy doesn't set it by default, and Caddy overwrites any client-supplied value — so this both gives the limiter a true client IP and closes the spoof. Without it every client collapses into one shared per-IP bucket (Caddy's container address).
+- **`/auth/*`** → split by one rule, with **no** prefix strip. The split is on method: every BFF endpoint is a `POST` and every SPA `/auth` page (sign-in, register, recovery) is a `GET`, so any `GET`/`HEAD` goes to `web`, whose `index.html` fallback lets the SPA route it, and **every other** `/auth` request goes to `reverse_proxy auth-proxy:3002`. The auth-proxy owns the list of BFF endpoints and answers anything else with a 404, so Caddy keeps no path list at all (adding an `/auth` page or endpoint never touches the Caddyfile), and production answers each `/auth` request exactly as the dev mirror in `web/vite.config.ts` does. A blanket `handle_path /auth/*` would strip `/auth`, break the auth-proxy's routing, and swallow those GET pages — the subtlest prod-only failure. The dual-cookie plant + token-strip happens inside the `auth-proxy` BFF, not Caddy. The auth-proxy handle also sets **`header_up X-Real-IP {client_ip}`**: the BFF's rate limiter keys per-IP off `X-Real-IP` only (never the spoofable `X-Forwarded-For`), Caddy doesn't set it by default, and Caddy overwrites any client-supplied value — so this both gives the limiter a true client IP and closes the spoof. `{client_ip}` is the visitor's address because the global `servers { trusted_proxies static 172.30.0.10/32 }` trusts the `X-Forwarded-For` of the shared lynnscape Caddy, and of nothing else. Without the header every client collapses into one shared per-IP bucket (a container address); `{remote_host}` would collapse them too, since the socket peer is now the shared Caddy.
 - **`/avatars/*.webp`** (GET) → `file_server` over the avatars volume with a one-year immutable `Cache-Control`; `POST/DELETE /avatars*` → `sidecar:3001` with the same cookie→bearer translation.
 - **Everything else** (including `/gotrue/templates/*`) → `web:80`.
 
 The behaviour is the contract: **the JavaScript in the browser never sees the JWT**, and PostgREST sees a normal `Authorization: Bearer …` header.
+
+### Behind the shared lynnscape Caddy
+
+The VPS hosts more than Cairn (the website, future apps), so one shared Caddy owns ports `80`/`443` for every `*.lynnscape.eu` site. It lives in its own repo, [lynnscape-server](https://github.com/Lynnscape/lynnscape-server) (on the box at `/srv/lynnscape-server`), which also documents the server itself. Cairn keeps all of its own routing; the shared Caddy only knows "`cairn.lynnscape.eu` goes to `cairn:80` on the `edge` network".
+
+```
+visitor ──443──▶ shared Caddy (TLS, 172.30.0.10 on `edge`)
+                   └─ cairn.lynnscape.eu ──HTTP──▶ Cairn's Caddy (alias `cairn`)
+                                                     └─ /api, /auth, /avatars, the SPA
+```
+
+What Cairn relies on, and lynnscape-server keeps:
+
+- **The visitor's address.** The shared Caddy replaces any `X-Forwarded-For` the visitor sent with their real address, and has the fixed address `172.30.0.10` on `edge`. Cairn's Caddy trusts that one address (`trusted_proxies`), so `{client_ip}` is the visitor and `X-Real-IP` reaches the auth-proxy's rate limiter correctly.
+- **The privacy claims.** The shared Caddy writes no access log, filters its 5xx error lines the same way (no client address, headers or query string), and caps its container log at the same ~50 MB. See `logging.md` and `legal.md` → claims table.
+- **`X-Forwarded-Proto: https`** reaches Cairn's services, passed through by Cairn's Caddy because the shared Caddy is trusted.
+
+Cairn's Caddy still sets Cairn's own security headers. Its `caddy_data` volume keeps the certificate from before the shared Caddy existed; lynnscape-server's `docs/cutover.md` (the one-time move behind the shared Caddy, with its rollback) uses it.
 
 ### `.env.prod`
 
@@ -174,7 +194,7 @@ ln -s .env.prod .env   # migrate.sh sources .env, not .env.prod
 ./scripts/migrate.sh
 ```
 
-Same script as in development, against the production Postgres. Two prerequisites the script assumes: it sources **`.env`** (not `.env.prod`) — so symlink `.env → .env.prod` on the box first — and it connects with the host's `psql` to `localhost:5432`, which is why the prod compose publishes Postgres on the loopback `127.0.0.1:5432` (the only published port besides Caddy's). Install `postgresql-client` on the box if `psql` isn't present, and on a cold box bump `MIGRATE_AUTH_USERS_TIMEOUT=120` for the first run. There is no production seed data — the database starts empty and the first user to sign up is genuinely the first user.
+Same script as in development, against the production Postgres. Two prerequisites the script assumes: it sources **`.env`** (not `.env.prod`) — so symlink `.env → .env.prod` on the box first — and it connects with the host's `psql` to `localhost:5432`, which is why the prod compose publishes Postgres on the loopback `127.0.0.1:5432` (the only port the Cairn stack publishes). Install `postgresql-client` on the box if `psql` isn't present, and on a cold box bump `MIGRATE_AUTH_USERS_TIMEOUT=120` for the first run. There is no production seed data — the database starts empty and the first user to sign up is genuinely the first user.
 
 ## Backups
 
