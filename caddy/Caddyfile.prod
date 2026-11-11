@@ -1,6 +1,7 @@
-# Production reverse proxy for Cairn. Automatic TLS via ACME (cert persists
-# in the caddy_data volume), security headers, and the path routing that
-# fronts the self-hosted stack. The response-side cookie plant lives in the
+# Production reverse proxy for Cairn: security headers and the path routing
+# that fronts the self-hosted stack. It serves plain HTTP on the `edge` Docker
+# network only. The shared lynnscape Caddy (the lynnscape-server repo) owns
+# ports 80/443, terminates TLS and forwards cairn.<domain> here. The response-side cookie plant lives in the
 # auth-proxy; Caddy handles the request-side cookie->bearer translation for
 # the data plane (PostgREST + sidecar writes) and routes /auth to the proxy.
 #
@@ -17,6 +18,14 @@
 # the headers and the query string from those lines so no IP address or row
 # value reaches the log (docs/logging.md).
 {
+	# The shared lynnscape Caddy forwards here from this fixed address on the
+	# `edge` network. It rewrites X-Forwarded-For from scratch on every request,
+	# so trust it, and only it, for the visitor's address: {client_ip} then
+	# means the visitor, not the shared Caddy.
+	servers {
+		trusted_proxies static 172.30.0.10/32
+	}
+
 	log default {
 		format filter {
 			wrap json
@@ -31,7 +40,9 @@
 	}
 }
 
-cairn.{$DOMAIN} {
+# http:// because TLS ends at the shared Caddy; without it this Caddy would
+# try to get its own certificate.
+http://cairn.{$DOMAIN} {
 	encode gzip
 
 	header {
@@ -66,14 +77,17 @@ cairn.{$DOMAIN} {
 		}
 		# The auth-proxy's rate limiter keys per-IP off X-Real-IP ONLY (it ignores
 		# the spoofable X-Forwarded-For). Caddy does not set X-Real-IP by default,
-		# so set it here to the real socket peer — Caddy OVERWRITES any
-		# client-supplied value, which both gives the limiter a true client IP and
-		# closes the spoof. Without this, X-Real-IP is absent and clientIp() falls
-		# back to Caddy's container IP, collapsing every client into one shared
-		# bucket. See auth-proxy/src/lib/rate-limit.ts.
+		# so set it here to the visitor's address — {client_ip}, which comes from
+		# the trusted shared Caddy's X-Forwarded-For (see `servers` above) — and
+		# Caddy OVERWRITES any client-supplied value, which both gives the limiter
+		# a true client IP and closes the spoof. Without this, X-Real-IP is absent
+		# and clientIp() falls back to a container address, collapsing every
+		# client into one shared bucket. {remote_host} would be that container
+		# address too: the socket peer is now the shared Caddy, not the visitor.
+		# See auth-proxy/src/lib/rate-limit.ts.
 		handle {
 			reverse_proxy auth-proxy:3002 {
-				header_up X-Real-IP {remote_host}
+				header_up X-Real-IP {client_ip}
 			}
 		}
 	}

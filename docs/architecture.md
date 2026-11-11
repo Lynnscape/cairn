@@ -33,7 +33,7 @@ Explicit non-goals:
 │  Hetzner VPS (Germany, ~€5/month)                           │
 │                                                             │
 │  ┌─────────────┐                                            │
-│  │   Caddy     │  ← reverse proxy, automatic Let's Encrypt, │
+│  │   Caddy     │  ← reverse proxy (TLS at a shared Caddy),  │
 │  └──────┬──────┘    path-prefix routing, cookie/JWT shim    │
 │         │                                                   │
 │    ┌────┼─────────┬───────────┐                             │
@@ -174,7 +174,7 @@ Caddy is the right home for this shim because the proxy is already where the tru
 
 Caddy sits in front of every backend service. Its job is to:
 
-- Terminate TLS, with certificates obtained automatically from Let's Encrypt.
+- Receive plain HTTP from the shared lynnscape Caddy, which terminates TLS for every site on the VPS (certificates from Let's Encrypt) and forwards `cairn.<domain>` here. See `deployment.md` → "Behind the shared lynnscape Caddy".
 - Route by path on the single `cairn.<domain>` origin: `/` to the web bundle, `/api/*` to PostgREST, `/auth/*` to GoTrue.
 - Implement the cookie/JWT shim described above.
 - Set baseline security headers (HSTS, content-type sniffing off, referrer policy).
@@ -237,7 +237,7 @@ Backup retention: 7 daily, 4 weekly, 12 monthly snapshots, pruned automatically 
 A typical "show me my lists" request, from a logged-in user with the session cookie:
 
 1. The browser sends `GET https://cairn.<domain>/api/lists`. The browser automatically attaches both session cookies, including `Cookie: cairn_access=...`.
-2. Caddy terminates TLS. The path matches the `/api/*` route.
+2. The shared lynnscape Caddy terminates TLS and forwards the request to Cairn's Caddy. The path matches the `/api/*` route.
 3. Caddy reads the short-lived `cairn_access` cookie (the access JWT — _not_ the durable `cairn_session` refresh-token cookie) and rewrites the request as `GET /lists` to PostgREST with `Authorization: Bearer <jwt>`. If the access JWT has expired, PostgREST answers `401 jwt expired` and the web client silently refreshes (see "JWT storage" above) before retrying.
 4. PostgREST verifies the JWT signature and runs `SET LOCAL request.jwt.claims = '<jwt-claims-json>'` on the Postgres connection (the JSON-object GUC, set per-request, contains every claim including `sub`). PostgREST v10 removed the per-claim `request.jwt.claim.<name>` GUCs; we run v12, so the JSON-object form is what `public.uid()` reads from.
 5. Postgres executes `SELECT * FROM lists`. The row-level security policy on `lists` filters the result to only those where the user is a member.

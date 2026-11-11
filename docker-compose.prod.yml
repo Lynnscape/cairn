@@ -99,11 +99,16 @@ services:
       - postgrest
     restart: unless-stopped
 
+  # No published ports: the shared lynnscape Caddy (lynnscape-server repo) owns
+  # 80/443 and reaches this one over the `edge` network under the alias
+  # `cairn`. The alias, not the service name: other projects on `edge` have a
+  # `caddy` service too.
   caddy:
     logging: *default-logging
-    ports:
-      - "80:80"
-      - "443:443"
+    networks:
+      default:
+      edge:
+        aliases: [cairn]
     environment:
       DOMAIN: ${DOMAIN}
     volumes:
@@ -113,6 +118,14 @@ services:
       - caddy_config:/config
     restart: unless-stopped
 
+# Created by lynnscape-server's compose file, which must be up (or at least
+# created) before this stack starts.
+networks:
+  edge:
+    external: true
+
+# caddy_data still holds the certificate from before the shared Caddy; the
+# rollback in lynnscape-server's docs/cutover.md needs it.
 volumes:
   caddy_data:
   caddy_config:
