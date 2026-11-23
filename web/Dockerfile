@@ -14,7 +14,7 @@ RUN pnpm build
 # Runtime stage: Caddy serves the static bundle on :80 with an SPA fallback so
 # client-side routes resolve to index.html. adapter-static emits the gotrue
 # templates under build/gotrue/ alongside the app, served from the same root.
-FROM caddy:2.9.1-alpine AS runtime
+FROM caddy:2.11.9-alpine AS runtime
 COPY --from=build /app/build /srv
 RUN printf '%s\n' \
 	':80 {' \
