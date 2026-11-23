@@ -145,9 +145,9 @@
 		<p>Under the GDPR you can:</p>
 		<ul>
 			<li>
-				get a copy of your data, in a portable format — <em
-					>Settings → Privacy &amp; data → Download my data</em
-				>;
+				get a copy of your data, in a portable format — <em>
+					Settings → Privacy &amp; data → Download my data
+				</em>;
 			</li>
 			<li>correct it — edit your profile in Settings;</li>
 			<li>erase it — <em>Settings → Account → Delete account</em>;</li>

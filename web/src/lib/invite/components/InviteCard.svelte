@@ -36,12 +36,12 @@
 	</div>
 </div>
 <div class="buttons">
-	<Button variant="pill" tone="ink" size="sm" data-test={declineDataTest} onclick={onDecline}
-		>Decline</Button
-	>
-	<Button variant="pill" tone="sage" size="sm" data-test={acceptDataTest} onclick={onAccept}
-		>Accept</Button
-	>
+	<Button variant="pill" tone="ink" size="sm" data-test={declineDataTest} onclick={onDecline}>
+		Decline
+	</Button>
+	<Button variant="pill" tone="sage" size="sm" data-test={acceptDataTest} onclick={onAccept}>
+		Accept
+	</Button>
 </div>
 
 <style>

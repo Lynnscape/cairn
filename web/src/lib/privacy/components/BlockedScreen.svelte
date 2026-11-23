@@ -51,8 +51,10 @@
 								tone="ink"
 								size="sm"
 								data-test="unblock-{entry.otherUserId}"
-								onclick={() => void unblock(entry.otherUserId)}>Unblock</Button
+								onclick={() => void unblock(entry.otherUserId)}
 							>
+								Unblock
+							</Button>
 						</li>
 					{/each}
 				</ul>

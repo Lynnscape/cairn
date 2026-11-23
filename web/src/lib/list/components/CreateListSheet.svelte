@@ -74,14 +74,14 @@
 		{/if}
 		<ButtonPair>
 			{#snippet left()}
-				<Button type="button" tone="ink" data-test="create-list-cancel" onclick={onclose}
-					>Cancel</Button
-				>
+				<Button type="button" tone="ink" data-test="create-list-cancel" onclick={onclose}>
+					Cancel
+				</Button>
 			{/snippet}
 			{#snippet right()}
-				<Button type="submit" tone="primary" data-test="create-list-submit" disabled={submitting}
-					>Create</Button
-				>
+				<Button type="submit" tone="primary" data-test="create-list-submit" disabled={submitting}>
+					Create
+				</Button>
 			{/snippet}
 		</ButtonPair>
 	</form>

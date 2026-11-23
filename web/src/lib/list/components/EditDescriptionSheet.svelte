@@ -58,16 +58,18 @@
 		<p class="hint hint-error" data-test="edit-description-error">{error}</p>
 	{/if}
 	<div class="actions">
-		<Button type="button" tone="ink" data-test="edit-description-cancel" onclick={onclose}
-			>Cancel</Button
-		>
+		<Button type="button" tone="ink" data-test="edit-description-cancel" onclick={onclose}>
+			Cancel
+		</Button>
 		<Button
 			type="button"
 			tone="primary"
 			data-test="edit-description-save"
 			disabled={submitting}
-			onclick={() => void handleSave()}>Save</Button
+			onclick={() => void handleSave()}
 		>
+			Save
+		</Button>
 	</div>
 </Sheet>
 

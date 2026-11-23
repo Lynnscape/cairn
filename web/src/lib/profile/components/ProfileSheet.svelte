@@ -155,8 +155,10 @@
 								<button
 									onclick={() => {
 										confirmBlockOpen = false;
-									}}>Cancel</button
+									}}
 								>
+									Cancel
+								</button>
 							{/snippet}
 							{#snippet right()}
 								<button
@@ -164,8 +166,10 @@
 									onclick={async () => {
 										await blockUser(userId);
 										onclose();
-									}}>Block</button
+									}}
 								>
+									Block
+								</button>
 							{/snippet}
 						</ButtonPair>
 					</div>

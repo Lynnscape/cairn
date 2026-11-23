@@ -18,9 +18,7 @@ const USER_KEY = 'cairn.user';
 export type AuthUser = { id: string; username: string };
 
 export type Session =
-	| { status: 'unknown' }
-	| { status: 'signed-out' }
-	| { status: 'signed-in'; user: AuthUser };
+	{ status: 'unknown' } | { status: 'signed-out' } | { status: 'signed-in'; user: AuthUser };
 
 // Boxed under `.current` so TypeScript narrows across `status` → `user`
 // reads: after `if (session.current.status === 'signed-in')`, the very
@@ -37,9 +35,7 @@ export const session = $state<{ current: Session }>({
 // an authoritative sign-out, `transient` is a momentary upstream blip
 // (503 / network / malformed body) that MUST NOT sign the user out.
 export type RefreshResult =
-	| { status: 'ok'; user: AuthUser }
-	| { status: 'revoked' }
-	| { status: 'transient' };
+	{ status: 'ok'; user: AuthUser } | { status: 'revoked' } | { status: 'transient' };
 
 // The BFF returns a tokenless `user` on success; today's boot did an
 // unvalidated `as AuthUser` cast, which would set a half-populated session

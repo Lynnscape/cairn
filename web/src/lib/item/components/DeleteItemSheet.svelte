@@ -50,8 +50,10 @@
 			tone="destructive"
 			data-test="delete-confirm"
 			disabled={deleting}
-			onclick={() => void handleDelete()}>Delete</Button
+			onclick={() => void handleDelete()}
 		>
+			Delete
+		</Button>
 	</div>
 </Sheet>
 

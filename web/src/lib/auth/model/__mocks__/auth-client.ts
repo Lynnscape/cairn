@@ -13,14 +13,12 @@ const SEED_USER: AuthUser = {
 	username: 'dev'
 };
 
-export const signIn = vi.fn(
-	(_username: string, _password: string): Promise<{ user: AuthUser }> =>
-		Promise.resolve({ user: SEED_USER })
+export const signIn = vi.fn((_username: string, _password: string): Promise<{ user: AuthUser }> =>
+	Promise.resolve({ user: SEED_USER })
 );
 
-export const register = vi.fn(
-	(_username: string, _password: string): Promise<{ user: AuthUser }> =>
-		Promise.resolve({ user: SEED_USER })
+export const register = vi.fn((_username: string, _password: string): Promise<{ user: AuthUser }> =>
+	Promise.resolve({ user: SEED_USER })
 );
 
 export const logout = vi.fn((): Promise<void> => Promise.resolve());

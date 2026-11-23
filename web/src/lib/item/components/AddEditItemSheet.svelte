@@ -97,11 +97,12 @@
 		</div>
 
 		<div class="actions">
-			<Button type="button" tone="ink" data-test="add-edit-cancel" onclick={oncancel}>Cancel</Button
-			>
-			<Button type="submit" tone="primary" data-test="add-edit-submit" disabled={submitting}
-				>{mode === 'add' ? 'Add' : 'Save'}</Button
-			>
+			<Button type="button" tone="ink" data-test="add-edit-cancel" onclick={oncancel}>
+				Cancel
+			</Button>
+			<Button type="submit" tone="primary" data-test="add-edit-submit" disabled={submitting}>
+				{mode === 'add' ? 'Add' : 'Save'}
+			</Button>
 		</div>
 	</form>
 </Sheet>

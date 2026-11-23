@@ -67,6 +67,8 @@
 			color: #fff;
 			background: {bg};
 			user-select: none;
-		">{text}</span
+		"
 	>
+		{text}
+	</span>
 {/if}

@@ -146,8 +146,10 @@
 						aria-pressed={sel}
 						data-test="fontsize-{f.value}"
 						style="font-size: {f.px}px"
-						onclick={() => (preferences.fontSize = f.value)}>A</button
+						onclick={() => (preferences.fontSize = f.value)}
 					>
+						A
+					</button>
 				{/each}
 			</div>
 		</section>

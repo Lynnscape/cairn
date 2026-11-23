@@ -34,9 +34,9 @@
 	<p>You accepted {entry?.inviterName}'s invite. Add {entry?.inviterName} to your circle?</p>
 	<ButtonPair>
 		{#snippet left()}
-			<Button variant="rect" tone="ink" size="md" data-test="post-accept-not-now" onclick={dismiss}
-				>Not now</Button
-			>
+			<Button variant="rect" tone="ink" size="md" data-test="post-accept-not-now" onclick={dismiss}>
+				Not now
+			</Button>
 		{/snippet}
 		{#snippet right()}
 			<Button
@@ -44,8 +44,10 @@
 				tone="primary"
 				size="md"
 				data-test="post-accept-add-to-circle"
-				onclick={() => void addToCircle()}>Add to circle</Button
+				onclick={() => void addToCircle()}
 			>
+				Add to circle
+			</Button>
 		{/snippet}
 	</ButtonPair>
 </Sheet>

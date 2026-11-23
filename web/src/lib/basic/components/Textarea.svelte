@@ -42,8 +42,7 @@
 	rows={rowsProp}
 	style:min-height={minHeight}
 	style:resize="none"
-	{...rest}
-></textarea>
+	{...rest}></textarea>
 
 <style>
 	textarea {

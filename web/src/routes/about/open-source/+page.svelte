@@ -27,8 +27,10 @@
 		<a
 			href={asset('/legal/licenses.txt')}
 			data-sveltekit-reload
-			data-test="open-source-licenses-link">licenses.txt</a
-		>, and on the source repository.
+			data-test="open-source-licenses-link"
+		>
+			licenses.txt
+		</a>, and on the source repository.
 	</p>
 </LegalPage>
 

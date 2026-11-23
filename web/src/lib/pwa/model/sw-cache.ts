@@ -9,9 +9,7 @@ import { API_CACHE_PREFIX, SHELL_CACHE_PREFIX } from '$lib/shared/model/cache-na
 
 /** The verdict for one `/api` request URL. */
 export type ApiClass =
-	| 'overview'
-	| { kind: 'list-scoped'; listId: string | null; isEntry?: boolean }
-	| null;
+	'overview' | { kind: 'list-scoped'; listId: string | null; isEntry?: boolean } | null;
 
 /** Versioned shell-cache name, e.g. `cairn-shell-<build>`. */
 export const shellCache = (version: string): string => `${SHELL_CACHE_PREFIX}${version}`;

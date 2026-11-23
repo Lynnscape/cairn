@@ -42,17 +42,19 @@
 					<li class="row media" data-test="deleted-list-row-{row.id}">
 						<div class="meta">
 							<h3 class="name">{row.name}</h3>
-							<span class="attribution caption"
-								>deleted by {row.deleted_by_name} · {timeAgo(row.deleted_at)}</span
-							>
+							<span class="attribution caption">
+								deleted by {row.deleted_by_name} · {timeAgo(row.deleted_at)}
+							</span>
 						</div>
 						<Button
 							variant="pill"
 							tone="ink"
 							size="sm"
 							data-test="deleted-list-restore-{row.id}"
-							onclick={() => void restoreOne(row.id)}>Restore</Button
+							onclick={() => void restoreOne(row.id)}
 						>
+							Restore
+						</Button>
 					</li>
 				{/each}
 			</ul>

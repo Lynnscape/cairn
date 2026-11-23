@@ -3,8 +3,7 @@ import { profile } from '$lib/shared/state/profile.svelte';
 import type { BlockedEntry, CircleEntry, RelationshipRow } from '$lib/privacy/model/relationship';
 
 export type AddCircleResult =
-	| { ok: true }
-	| { ok: false; reason: 'no-such-user' | 'self' | 'unknown' };
+	{ ok: true } | { ok: false; reason: 'no-such-user' | 'self' | 'unknown' };
 
 function toCircleEntry(row: RelationshipRow): CircleEntry {
 	return {

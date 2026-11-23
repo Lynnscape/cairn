@@ -49,9 +49,9 @@
 				you to a list.
 			</p>
 			<div class="whats-this">
-				<Button variant="link" data-test="whats-this" onclick={() => (explainerOpen = true)}
-					>What's this?</Button
-				>
+				<Button variant="link" data-test="whats-this" onclick={() => (explainerOpen = true)}>
+					What's this?
+				</Button>
 			</div>
 		</div>
 
@@ -78,8 +78,10 @@
 									tone="destructive"
 									size="sm"
 									data-test="remove-{entry.otherUserId}"
-									onclick={() => void removeFromCircle(entry.otherUserId)}>Remove</Button
+									onclick={() => void removeFromCircle(entry.otherUserId)}
 								>
+									Remove
+								</Button>
 							</li>
 						{/each}
 					</ul>
@@ -99,9 +101,9 @@
 							bind:value={usernameInput}
 						/>
 					</div>
-					<Button variant="rect" tone="ink" data-test="circle-add-btn" onclick={handleAdd}
-						>Add</Button
-					>
+					<Button variant="rect" tone="ink" data-test="circle-add-btn" onclick={handleAdd}>
+						Add
+					</Button>
 				</div>
 			</div>
 			{#if addError}

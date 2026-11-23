@@ -63,15 +63,18 @@
 		<p class="hint hint-error" data-test="rename-list-error">{error}</p>
 	{/if}
 	<div class="actions">
-		<Button type="button" tone="ink" data-test="rename-list-cancel" onclick={onclose}>Cancel</Button
-		>
+		<Button type="button" tone="ink" data-test="rename-list-cancel" onclick={onclose}>
+			Cancel
+		</Button>
 		<Button
 			type="button"
 			tone="primary"
 			data-test="rename-list-save"
 			disabled={submitting}
-			onclick={() => void handleSave()}>Save</Button
+			onclick={() => void handleSave()}
 		>
+			Save
+		</Button>
 	</div>
 </Sheet>
 

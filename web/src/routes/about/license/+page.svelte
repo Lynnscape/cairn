@@ -9,9 +9,9 @@
 
 <LegalPage title="Source code" sub="Cairn is open source" data-test="license-screen">
 	<p>
-		Cairn itself is published under the <strong
-			>GNU Affero General Public License, version 3 or later</strong
-		>
+		Cairn itself is published under the <strong>
+			GNU Affero General Public License, version 3 or later
+		</strong>
 		(AGPL-3.0-or-later). The source — every line that runs on the server and in your browser — is public:
 	</p>
 

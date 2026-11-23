@@ -210,9 +210,9 @@
 														/>
 														<span class="mv-name">{mv.display_name}</span>
 														{#if mv.user_id !== TOMBSTONE_UID && mv.username}
-															<span class="identity-handle" data-test="vote-handle-{mv.user_id}"
-																>@{mv.username}</span
-															>
+															<span class="identity-handle" data-test="vote-handle-{mv.user_id}">
+																@{mv.username}
+															</span>
 														{/if}
 														<span
 															class="mv-val"
@@ -239,26 +239,32 @@
 										Added by <strong
 											data-test="attribution-creator-{item.id}"
 											class:tombstone={item.created_by === TOMBSTONE_UID}
-											>{item.created_by_name}</strong
 										>
+											{item.created_by_name}
+										</strong>
 										{#if item.created_by !== TOMBSTONE_UID && item.created_by_username}
-											<span class="identity-handle" data-test="attribution-creator-handle-{item.id}"
-												>@{item.created_by_username}</span
+											<span
+												class="identity-handle"
+												data-test="attribution-creator-handle-{item.id}"
 											>
+												@{item.created_by_username}
+											</span>
 										{/if}
 										{timeAgo(item.created_at)}.
 										{#if item.modified_by_name}
 											Last edited by <strong
 												data-test="attribution-editor-{item.id}"
 												class:tombstone={item.modified_by === TOMBSTONE_UID}
-												>{item.modified_by_name}</strong
 											>
+												{item.modified_by_name}
+											</strong>
 											{#if item.modified_by !== TOMBSTONE_UID && item.modified_by_username}
 												<span
 													class="identity-handle"
 													data-test="attribution-editor-handle-{item.id}"
-													>@{item.modified_by_username}</span
 												>
+													@{item.modified_by_username}
+												</span>
 											{/if}
 											{timeAgo(item.modified_at)}.
 										{/if}
