@@ -3,11 +3,11 @@
 		'aria-label': ariaLabel,
 		onclick,
 		...rest
-	} = $props<{
+	}: {
 		'aria-label'?: string;
 		onclick?: () => void;
 		[k: string]: unknown;
-	}>();
+	} = $props();
 </script>
 
 <button data-test={rest['data-test']} aria-label={ariaLabel} {onclick}>MoreButton</button>

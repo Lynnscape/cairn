@@ -1,10 +1,11 @@
 <script lang="ts">
-	let { onedit, ondelete } = $props<{
-		itemName?: string;
+	let {
+		onedit,
+		ondelete
+	}: {
 		onedit?: () => void;
 		ondelete?: () => void;
-		onclose?: () => void;
-	}>();
+	} = $props();
 </script>
 
 <div data-test="item-overflow-sheet-stub">

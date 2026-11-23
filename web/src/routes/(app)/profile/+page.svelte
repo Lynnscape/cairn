@@ -14,13 +14,7 @@
 	import type { IconName } from '$lib/basic/model/icon-paths';
 
 	type ViewState =
-		| 'edit'
-		| 'cropping'
-		| 'uploading'
-		| 'success'
-		| 'too-big'
-		| 'wrong-format'
-		| 'network';
+		'edit' | 'cropping' | 'uploading' | 'success' | 'too-big' | 'wrong-format' | 'network';
 
 	let viewState = $state<ViewState>('edit');
 	let showSourceSheet = $state(false);
@@ -183,8 +177,10 @@
 								leadingIcon="trash-2"
 								data-test="remove-avatar"
 								onclick={removeAvatar}
-								disabled={removing}>Remove</Button
+								disabled={removing}
 							>
+								Remove
+							</Button>
 						{/if}
 					</div>
 				</div>
@@ -213,9 +209,9 @@
 			<p class="field-hint">What other list members see. E-mail stays private.</p>
 
 			<div class="save-row">
-				<Button variant="rect" tone="primary" size="md" data-test="save-profile" onclick={saveName}
-					>Save</Button
-				>
+				<Button variant="rect" tone="primary" size="md" data-test="save-profile" onclick={saveName}>
+					Save
+				</Button>
 			</div>
 		</div>
 
@@ -232,7 +228,7 @@
 		onsave={handleCropSave}
 	/>
 {:else}
-	{@const isUploadState = viewState as Exclude<ViewState, 'edit' | 'cropping'>}
+	{@const isUploadState = viewState}
 	{@const isError =
 		viewState === 'too-big' || viewState === 'wrong-format' || viewState === 'network'}
 	<div class="screen" data-test="upload-state">
