@@ -51,4 +51,11 @@ describe('/about', () => {
 		expect(footer).toContain(OPERATOR.town);
 		expect(footer).toContain(HOSTING_COUNTRY);
 	});
+
+	test('(e) the brand name links to the operator’s website', () => {
+		const { getByDataTest } = render(Page);
+		const link = getByDataTest('about-brand-link');
+		expect(link.textContent).toBe(OPERATOR.brand);
+		expect(link).toHaveAttribute('href', OPERATOR.website);
+	});
 });

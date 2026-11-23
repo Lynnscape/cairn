@@ -119,8 +119,10 @@
 						variant="link"
 						leadingIcon="info"
 						data-test="whats-a-circle"
-						onclick={() => (explainerOpen = true)}>What's a circle?</Button
+						onclick={() => (explainerOpen = true)}
 					>
+						What's a circle?
+					</Button>
 				</div>
 			{/if}
 		</section>
@@ -163,10 +165,10 @@
 
 		<div class="privacy-note media" data-test="privacy-note">
 			<Icon name="lock" size={20} />
-			<span class="disclaimer"
-				>Your e-mail address is never shown to other people on Cairn — only your display name and
-				profile picture.</span
-			>
+			<span class="disclaimer">
+				Your e-mail address is never shown to other people on Cairn — only your display name and
+				profile picture.
+			</span>
 		</div>
 	</div>
 </div>

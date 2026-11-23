@@ -81,10 +81,12 @@
 		</div>
 
 		<footer class="fine" data-test="about-footer">
-			<i
-				>A {OPERATOR.brand} app · made with care in {OPERATOR.town} · hosted in {HOSTING_COUNTRY} · no
-				trackers</i
-			>
+			<i>
+				A
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external site (the operator's website), not an app route -->
+				<a href={OPERATOR.website} rel="noopener" data-test="about-brand-link">{OPERATOR.brand}</a>
+				app · made with care in {OPERATOR.town} · hosted in {HOSTING_COUNTRY} · no trackers
+			</i>
 		</footer>
 	</div>
 </div>

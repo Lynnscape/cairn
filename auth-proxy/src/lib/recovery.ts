@@ -175,10 +175,7 @@ async function callUserRpc(
 // cap; 23514 is a malformed candidate address — both surface as the SQLSTATE in
 // PostgREST's error body so the endpoint can answer 429 / 400 distinctly.
 export type VerifyRequestResult =
-	| { status: 'ok' }
-	| { status: 'throttled' }
-	| { status: 'invalid_email' }
-	| { status: 'error' };
+	{ status: 'ok' } | { status: 'throttled' } | { status: 'invalid_email' } | { status: 'error' };
 
 export async function requestRecoveryEmailVerification(
 	email: string,

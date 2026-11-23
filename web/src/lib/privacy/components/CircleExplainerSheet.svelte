@@ -29,9 +29,10 @@
 	<div class="explainer-point">
 		<h3 class="point-title">It only governs invites coming to you.</h3>
 		<p class="point-body caption">
-			It does not affect your ability to invite anyone. If Bob's policy is also <em>Your circle</em
-			>, what matters for inviting Bob is whether <em>you</em> are in <em>their</em> circle — not the
-			other way around.
+			It does not affect your ability to invite anyone. If Bob's policy is also <em>
+				Your circle
+			</em>, what matters for inviting Bob is whether <em>you</em> are in <em>their</em> circle — not
+			the other way around.
 		</p>
 	</div>
 

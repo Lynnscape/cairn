@@ -1,4 +1,8 @@
 {
 	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		// TypeScript 6 no longer auto-includes @types/*; the specs use Node globals.
+		"types": ["node"]
+	},
 	"include": ["**/*.ts"]
 }

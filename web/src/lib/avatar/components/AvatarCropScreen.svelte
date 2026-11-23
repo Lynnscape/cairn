@@ -216,9 +216,9 @@
 		</div>
 
 		<div class="save-row">
-			<Button variant="rect" tone="primary" size="md" data-test="crop-save" onclick={handleSave}
-				>Save</Button
-			>
+			<Button variant="rect" tone="primary" size="md" data-test="crop-save" onclick={handleSave}>
+				Save
+			</Button>
 		</div>
 	</div>
 </div>

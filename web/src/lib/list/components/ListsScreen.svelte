@@ -99,9 +99,9 @@
 							{#snippet trailing()}{#if item.is_public}<span
 										class="public-marker"
 										data-test="list-public-marker-{item.id}"
-										><Icon name="globe" size={ICON_SIZE} /><span class="sr-only">Public list</span
-										></span
-									>{/if}{/snippet}
+									>
+										<Icon name="globe" size={ICON_SIZE} /><span class="sr-only">Public list</span>
+									</span>{/if}{/snippet}
 						</NavRow>
 						<div class="extra">
 							<div class="extra-body">
@@ -112,9 +112,9 @@
 										data-test="list-desc-{item.id}"
 										onclick={() => toggleDesc(item.id)}
 									>
-										<span class="desc-text" bind:this={descTextEls[item.id]}
-											>{item.description}</span
-										>
+										<span class="desc-text" bind:this={descTextEls[item.id]}>
+											{item.description}
+										</span>
 										{#if expandedIds.has(item.id)}
 											<span class="see-toggle fine">(see less)</span>
 										{:else if truncatedIds.has(item.id)}
@@ -169,8 +169,10 @@
 		disabled={!network.online}
 		onclick={() => {
 			createSheetOpen = true;
-		}}><Icon name="plus" size={24} /></Fab
+		}}
 	>
+		<Icon name="plus" size={24} />
+	</Fab>
 {/if}
 
 {#if createSheetOpen}

@@ -21,5 +21,7 @@
 	data-test={rest['data-test']}
 	data-tone={rest.tone}
 	aria-pressed={rest['aria-pressed']}
-	{onclick}>{@render children?.()}</button
+	{onclick}
 >
+	{@render children?.()}
+</button>

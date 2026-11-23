@@ -1,9 +1,10 @@
 # Build stage: produce the static SvelteKit bundle in production mode. NODE_ENV
 # is set *after* install so the build toolchain (devDependencies) is still
 # available to pnpm.
-FROM node:20-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
-RUN corepack enable
+# Node 25+ no longer bundles Corepack, so install it before enabling pnpm.
+RUN npm install --global corepack && corepack enable
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .

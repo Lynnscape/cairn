@@ -15,5 +15,7 @@
 	data-test={rest['data-test']}
 	aria-label={rest['aria-label']}
 	{onclick}
-	{disabled}>{@render children?.()}</button
+	{disabled}
 >
+	{@render children?.()}
+</button>

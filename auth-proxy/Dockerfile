@@ -1,13 +1,14 @@
-FROM node:20-alpine AS build
+FROM node:26-alpine AS build
 WORKDIR /app
-RUN corepack enable
+# Node 25+ no longer bundles Corepack, so install it before enabling pnpm.
+RUN npm install --global corepack && corepack enable
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY tsconfig.json tsconfig.build.json ./
 COPY src/ ./src/
 RUN pnpm build
 
-FROM node:20-alpine AS runtime
+FROM node:26-alpine AS runtime
 WORKDIR /app
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules

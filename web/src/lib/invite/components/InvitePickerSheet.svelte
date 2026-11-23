@@ -147,8 +147,10 @@
 									tone="ink"
 									size="sm"
 									data-test="invite-picker-invite-{row.otherUserId}"
-									onclick={() => void inviteUser(row.otherUserId)}>Invite</Button
+									onclick={() => void inviteUser(row.otherUserId)}
 								>
+									Invite
+								</Button>
 							{/if}
 						</li>
 					{/each}
@@ -183,8 +185,10 @@
 									tone="ink"
 									size="sm"
 									data-test="invite-picker-invite-{row.userId}"
-									onclick={() => void inviteUser(row.userId)}>Invite</Button
+									onclick={() => void inviteUser(row.userId)}
 								>
+									Invite
+								</Button>
 							{/if}
 						</li>
 					{/each}
@@ -210,9 +214,9 @@
 					bind:value={username}
 				/>
 			</div>
-			<Button variant="rect" tone="ink" type="submit" data-test="invite-picker-username-send"
-				>Send</Button
-			>
+			<Button variant="rect" tone="ink" type="submit" data-test="invite-picker-username-send">
+				Send
+			</Button>
 		</form>
 	</section>
 </Sheet>

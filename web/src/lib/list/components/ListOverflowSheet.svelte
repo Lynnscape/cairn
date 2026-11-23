@@ -187,9 +187,9 @@
 				</p>
 				<ButtonPair>
 					{#snippet left()}
-						<Button variant="rect" tone="ink" size="md" onclick={() => (confirmingLeave = false)}
-							>Cancel</Button
-						>
+						<Button variant="rect" tone="ink" size="md" onclick={() => (confirmingLeave = false)}>
+							Cancel
+						</Button>
 					{/snippet}
 					{#snippet right()}
 						<Button
@@ -197,8 +197,10 @@
 							tone="destructive"
 							size="md"
 							data-test="list-overflow-leave-confirm"
-							onclick={() => void handleLeave()}>Leave</Button
+							onclick={() => void handleLeave()}
 						>
+							Leave
+						</Button>
 					{/snippet}
 				</ButtonPair>
 			</li>

@@ -31,15 +31,15 @@
 		<ol class="steps">
 			<li class="step">
 				<span class="step-glyph" aria-hidden="true"><Icon name="share" size={20} /></span>
-				<span class="step-body body"
-					>Tap the <strong>Share</strong> button in Safari's toolbar.</span
-				>
+				<span class="step-body body">
+					Tap the <strong>Share</strong> button in Safari's toolbar.
+				</span>
 			</li>
 			<li class="step">
 				<span class="step-glyph" aria-hidden="true"><Icon name="plus" size={20} /></span>
-				<span class="step-body body"
-					>Scroll down the share sheet and choose <strong>Add to Home Screen</strong>.</span
-				>
+				<span class="step-body body">
+					Scroll down the share sheet and choose <strong>Add to Home Screen</strong>.
+				</span>
 			</li>
 		</ol>
 	{:else}

@@ -78,8 +78,10 @@
 			font-size: 16px; font-weight: 600;
 			color: {indicatorColor(value)};
 			letter-spacing: {letterSpacing(value)};
-			display: inline-flex; justify-content: center; align-items: center;">{indicator(value)}</span
+			display: inline-flex; justify-content: center; align-items: center;"
 	>
+		{indicator(value)}
+	</span>
 
 	<button
 		use:thumbButton={1}

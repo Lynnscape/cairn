@@ -36,6 +36,6 @@ export const onUnauthorized = vi.fn((): void => {
 // Default to a transient outcome so a 401-driven consumer (the /api wrapper,
 // the bearer-write helper) does NOT silently retry under the auto-mock unless
 // a test opts in. Tests that exercise the refresh-retry path override this.
-export const refresh = vi.fn(
-	(): Promise<RefreshResult> => Promise.resolve({ status: 'transient' })
+export const refresh = vi.fn((): Promise<RefreshResult> =>
+	Promise.resolve({ status: 'transient' })
 );
