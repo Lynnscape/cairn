@@ -283,8 +283,11 @@ Not every deploy is a release: a deploy can ship `[Unreleased]` changes, and the
 
 A deploy is: commit and push to `main`, SSH to the VPS, pull, migrate, rebuild, swap.
 
+`cairn` has no SSH login on the shared lynnscape server: log in as the admin user and switch to `cairn`.
+
 ```bash
-ssh cairn@<vps>
+ssh lynn@<vps>
+sudo -iu cairn
 cd cairn
 git pull
 ./scripts/migrate.sh       # if there are new migrations
