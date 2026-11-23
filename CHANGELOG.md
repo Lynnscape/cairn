@@ -7,10 +7,23 @@ Notable changes to Cairn, newest first. The format follows
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-23
+
 ### Changed
 
 - The source code moved to <https://github.com/Lynnscape/cairn>, and the
   licence page links there. The old address redirects.
+- The About screen's footer links "Lynnscape" to <https://www.lynnscape.eu>.
+
+### Security
+
+- All three images (web build, auth proxy, avatar sidecar) now build on Node 26
+  LTS instead of Node 20, which reached end of life in April 2026 and no longer
+  receives security fixes.
+- Every dependency is updated to its latest release, including major upgrades of
+  Express (4 to 5), Multer (1 to 2), Nodemailer, jose, Vitest and Vite. Only
+  TypeScript (held at 6) and SvelteKit (held at 2) stay behind, for the reasons
+  recorded in the commit message.
 
 ## [1.0.0] - 2026-10-20
 
@@ -36,5 +49,6 @@ First release, live at <https://cairn.lynnscape.eu>.
 - For the operator: a self-hosted production stack (Postgres, PostgREST,
   GoTrue, Caddy with automatic TLS) and the `cairn-admin` CLI.
 
-[Unreleased]: https://github.com/Lynnscape/cairn/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Lynnscape/cairn/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/Lynnscape/cairn/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Lynnscape/cairn/releases/tag/v1.0.0
