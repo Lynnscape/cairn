@@ -92,7 +92,7 @@ services:
     restart: unless-stopped
 
   caddy:
-    image: caddy:2.9.1
+    image: caddy:2.11.9
     volumes:
       - avatars:/srv/cairn/avatars:ro
 
