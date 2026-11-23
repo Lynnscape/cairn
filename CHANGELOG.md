@@ -7,6 +7,14 @@ Notable changes to Cairn, newest first. The format follows
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-11-23
+
+### Security
+
+- Caddy, which serves the app and routes every request, is upgraded from 2.9.1
+  to 2.11.9. This brings nearly two years of fixes to Caddy and to the Go
+  runtime it is built with.
+
 ## [1.0.1] - 2026-11-23
 
 ### Changed
@@ -49,6 +57,7 @@ First release, live at <https://cairn.lynnscape.eu>.
 - For the operator: a self-hosted production stack (Postgres, PostgREST,
   GoTrue, Caddy with automatic TLS) and the `cairn-admin` CLI.
 
-[Unreleased]: https://github.com/Lynnscape/cairn/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/Lynnscape/cairn/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/Lynnscape/cairn/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/Lynnscape/cairn/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/Lynnscape/cairn/releases/tag/v1.0.0
