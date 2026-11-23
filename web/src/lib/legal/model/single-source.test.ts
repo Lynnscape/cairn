@@ -25,6 +25,7 @@ describe('deployment facts live only in operator.ts', () => {
 		OPERATOR.email,
 		OPERATOR.addressLines[0],
 		OPERATOR.brand,
+		OPERATOR.website,
 		SOURCE_REPO_URL
 	];
 

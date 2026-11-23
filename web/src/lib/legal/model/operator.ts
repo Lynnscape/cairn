@@ -13,7 +13,9 @@ export const OPERATOR = {
 	town: 'Groningen',
 	// The operator's personal label for their apps — a name, not a legal
 	// entity. The legal pages still name the operator as controller and party.
-	brand: 'Lynnscape'
+	brand: 'Lynnscape',
+	// The brand's website, linked from the About footer.
+	website: 'https://www.lynnscape.eu'
 } as const;
 
 export const HOSTING_COUNTRY = 'Germany';
